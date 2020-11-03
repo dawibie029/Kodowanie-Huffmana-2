@@ -34,9 +34,26 @@ bool odczytaj_odkodowane(const string& adres, list<wierzcholek>& wierzcholki, st
 			w_pomocniczy.znak = a.first;
 			w_pomocniczy.wartosc = a.second;
 			wierzcholki.push_back(w_pomocniczy);
-		}
+		}		
 		return true;
 	}
 	else
 		return false;
+}
+wierzcholek zbuduj_drzewo(list<wierzcholek>& wierzcholki) {
+	wierzcholek w_pomocniczy;
+	for (auto a : wierzcholki) {
+		if (a.has_parent == false) {
+			wierzcholki.sort([](wierzcholek a, wierzcholek b) {return a.wartosc < b.wartosc; });
+			w_pomocniczy.lewy = &a;
+			w_pomocniczy.prawy = &a + 1;
+			//a.has_parent = true;	ZROBIC ZEBY DZIALALO
+			//*(&a + 1).has_parent = true;
+			wierzcholki.push_back(w_pomocniczy);
+			zbuduj_drzewo(wierzcholki);
+		}
+		else
+			break;
+	}
+	return w_pomocniczy;
 }

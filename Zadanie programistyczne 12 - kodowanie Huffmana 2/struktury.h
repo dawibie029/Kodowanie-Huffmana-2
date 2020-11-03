@@ -7,6 +7,7 @@ struct wierzcholek {
 	unsigned long wartosc = 0; /**< wartoœæ danego wskaŸnika - iloœæ wyst¹pieñ danego znaku, lub suma wyst¹pieñ znaków w wierzcholkach, na które
 							   * wskazuja wskaŸniki */
 	char znak = 0;	/**< domyœlnie NULL, poniewa¿ tylko pocz¹tkowe wierzcho³ki maj¹ zapisany znak.
-					* Pozosta³e posiadaj¹ jedynie wskaŸniki do innych wierzcholkow */					
+					* Pozosta³e posiadaj¹ jedynie wskaŸniki do innych wierzcholkow */		
+	bool has_parent = false;
 };
 #endif

@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
-    //wierzcholek w;
-    //list<wierzcholek> wierzcholki;
+    wierzcholek w;
+    w.znak = 'w';
+    list<wierzcholek> wierzcholki;
 }
