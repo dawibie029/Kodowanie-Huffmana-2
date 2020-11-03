@@ -1,8 +1,11 @@
 #include <iostream>
-#include "struktury.h"
+#include <list>
 #include "funkcje.h"
+#include "struktury.h"
+using namespace std;
+
 int main()
 {
-    wierzcholek w;
-    std::cout << "wdasdasd" << std::endl;
+    //wierzcholek w;
+    //list<wierzcholek> wierzcholki;
 }

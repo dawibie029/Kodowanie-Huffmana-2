@@ -1,9 +1,6 @@
 #include "funkcje.h"
 #include "struktury.h"
-#include <vector>
 #include <map>
-#include <list>
-#include <string>
 #include <fstream>
 using namespace std;
 /*bool odczytaj_zakodowane(const std::string& adres, std::map<char, std::string>& mapa_wartosci, std::string& kod) {
