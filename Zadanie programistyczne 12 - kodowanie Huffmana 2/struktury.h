@@ -8,6 +8,7 @@ struct wierzcholek {
 							   * wskazuja wskaüniki */
 	char znak = 0;	/**< domyúlnie NULL, poniewaø tylko poczπtkowe wierzcho≥ki majπ zapisany znak.
 					* Pozosta≥e posiadajπ jedynie wskaüniki do innych wierzcholkow */		
-	bool has_parent = false;
+	bool ma_rodzica = false;	
+	unsigned short dzieci = 0;	// liczba pokoleÒ (czyli liczba ga≥Ízi od wierzcho≥ka do wierzcho≥kÛw poczπtkowych)
 };
 #endif

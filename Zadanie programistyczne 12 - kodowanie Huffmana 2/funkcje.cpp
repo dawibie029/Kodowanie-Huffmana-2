@@ -2,25 +2,10 @@
 #include "struktury.h"
 #include <map>
 #include <fstream>
+#include <algorithm>
 using namespace std;
-/*bool odczytaj_zakodowane(const std::string& adres, std::map<char, std::string>& mapa_wartosci, std::string& kod) {
-	std::ifstream plik(adres);
-	if (plik) {
-		getline(plik, kod, ';');
-			while (!plik.eof()) {
-				char znak;
-				std::string wartosc;
-				plik.get(znak);	//*Pobiera znak
-				plik.get();	//	Pomija symbol oddzielaj¹cy znaki od definicji (dla pliku wejœciowego dowolny, domyœlnie (oraz w pliku wyjœciowym) u¿ywany jest przecinek)
-				getline(plik, wartosc, ',');	//	Wczytuje wartoœæ znaku wczytanego w linijce wy¿ej. Oddzielaj¹c kod od nastêpnego znaku konieczne jest ju¿ u¿ycie przecinka.
-				mapa_wartosci[znak] = wartosc;
-			}
-		return true;
-	}
-	else
-		return false;
-}*/
-bool odczytaj_odkodowane(const string& adres, list<wierzcholek>& wierzcholki, string& kod) {
+
+bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, string& kod) {
 	std::ifstream plik(adres);
 	if (plik) {
 		map<char, int> ilosc_znakow;
@@ -40,20 +25,33 @@ bool odczytaj_odkodowane(const string& adres, list<wierzcholek>& wierzcholki, st
 	else
 		return false;
 }
-wierzcholek zbuduj_drzewo(list<wierzcholek>& wierzcholki) {
+wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 	wierzcholek w_pomocniczy;
-	for (auto a : wierzcholki) {
-		if (a.has_parent == false) {
-			wierzcholki.sort([](wierzcholek a, wierzcholek b) {return a.wartosc < b.wartosc; });
-			w_pomocniczy.lewy = &a;
-			w_pomocniczy.prawy = &a + 1;
-			//a.has_parent = true;	ZROBIC ZEBY DZIALALO
-			//*(&a + 1).has_parent = true;
-			wierzcholki.push_back(w_pomocniczy);
-			zbuduj_drzewo(wierzcholki);
+	sort(wierzcholki.begin(), wierzcholki.end(), sortuj_wierzcholki);
+	if (!wierzcholki[0].ma_rodzica && !wierzcholki[1].ma_rodzica) {		
+		w_pomocniczy.lewy = &wierzcholki[0];
+		w_pomocniczy.prawy = &wierzcholki[1];
+		w_pomocniczy.wartosc = wierzcholki[0].wartosc + wierzcholki[1].wartosc;
+		wierzcholki[0].ma_rodzica = true;
+		wierzcholki[1].ma_rodzica = true;
+		w_pomocniczy.dzieci++;
+		const wierzcholek w_pomocniczy2 = w_pomocniczy;
+		wierzcholki.push_back(w_pomocniczy2);
+		if (wierzcholki[0].lewy == nullptr) {
+			wierzcholki[wierzcholki.size() - 1].lewy->lewy = nullptr;
+			wierzcholki[wierzcholki.size() - 1].lewy->prawy = nullptr;
 		}
-		else
-			break;
+		if (wierzcholki[1].lewy == nullptr) {
+			wierzcholki[wierzcholki.size() - 1].prawy->lewy = nullptr;
+			wierzcholki[wierzcholki.size() - 1].prawy->prawy = nullptr;
+		}
+		zbuduj_drzewo(wierzcholki);
 	}
 	return w_pomocniczy;
+}
+bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
+	if (a.wartosc != b.wartosc)
+		return a.wartosc < b.wartosc;
+	else /** je¿eli jest taka sama wartoœæ, to w pierwszej kolejnoœci wybieramy wêzê³ z mniejsz¹ iloœci¹ dzieci*/
+		return a.dzieci < b.dzieci;
 }
