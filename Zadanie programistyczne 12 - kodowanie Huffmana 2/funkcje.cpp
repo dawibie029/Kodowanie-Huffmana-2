@@ -35,16 +35,7 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 		wierzcholki[0].ma_rodzica = true;
 		wierzcholki[1].ma_rodzica = true;
 		w_pomocniczy.dzieci++;
-		const wierzcholek w_pomocniczy2 = w_pomocniczy;
-		wierzcholki.push_back(w_pomocniczy2);
-		if (wierzcholki[0].lewy == nullptr) {
-			wierzcholki[wierzcholki.size() - 1].lewy->lewy = nullptr;
-			wierzcholki[wierzcholki.size() - 1].lewy->prawy = nullptr;
-		}
-		if (wierzcholki[1].lewy == nullptr) {
-			wierzcholki[wierzcholki.size() - 1].prawy->lewy = nullptr;
-			wierzcholki[wierzcholki.size() - 1].prawy->prawy = nullptr;
-		}
+		wierzcholki.push_back(w_pomocniczy);
 		zbuduj_drzewo(wierzcholki);
 	}
 	return w_pomocniczy;
