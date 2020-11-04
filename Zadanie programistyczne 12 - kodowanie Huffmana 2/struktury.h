@@ -7,11 +7,11 @@ struct wierzcholek {
 	wierzcholek* prawy = nullptr; /**< wskaŸnik na wierzcholek prawy */
 
 	unsigned long wartosc = 0; /**< wartoœæ danego wskaŸnika - iloœæ wyst¹pieñ danego znaku, lub suma wyst¹pieñ znaków w wierzcholkach, na które
-							   * wskazuja wskaŸniki */
+							   * wskazuj¹ wskaŸniki */
 	char znak = 0;	/**< domyœlnie NULL, poniewa¿ tylko pocz¹tkowe wierzcho³ki maj¹ zapisany znak.
 					* Pozosta³e posiadaj¹ jedynie wskaŸniki do innych wierzcholkow */
 	bool ma_rodzica = false;
 
-	unsigned short dzieci = 0;	// liczba pokoleñ (czyli liczba ga³êzi od wierzcho³ka do wierzcho³ków pocz¹tkowych)
+	unsigned short dzieci = 0;	/**< liczba pokoleñ (czyli liczba ga³êzi od wierzcho³ka do wierzcho³ków pocz¹tkowych) */
 };
 #endif

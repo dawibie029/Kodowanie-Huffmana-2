@@ -5,6 +5,14 @@
 #include <algorithm>
 using namespace std;
 
+/**
+	* Funkcja odczytuj¹ca z pliku tekst oraz konwertuj¹ca go na wektor wierzcho³ków zawieraj¹cych znak i liczbê jego wyst¹pieñ w tekœcie
+	* Parametry przekazywane przez referencjê
+	* @param adres - adres pliku tekstowego
+	* @param wierzcholki - wektor wierzcho³ków
+	* @param kod - niezmieniona zawartoœæ pliku tekstowego - domyœlnie tekst, który bêdzie kompresowany przez kodowanie Huffmana
+	* @return true jeœli uda siê otworzyæ plik. W przypadku niepowodzenia wartoœæ false
+*/
 bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, string& kod) {
 	std::ifstream plik(adres);
 	if (plik) {
@@ -29,31 +37,35 @@ bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, 
 		return false;
 }
 /**
-
-
+	* Funkcja tworz¹ca drzewo binarne
+	* Parametr przekazywany przez referencjê
+	* @param wierzcholki - wektor wierzcho³ków utworzonych w funkcji odczytaj_odkodowane
+	* @return pojedynczy wierzcho³ek, bêd¹cy szczytem drzewa binarnego. Zawiera adresy wierzcho³ków ni¿szych, 
+	* które zawieraj¹ adresy jeszcze ni¿szych, a¿ do wierzcho³ków zawieraj¹cych pojedyncze znaki i adresy o wartoœci nullptr
 */
 wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
-	static wierzcholek w_pomocniczy;
+	static wierzcholek w_pomocniczy;	//**< static, poniewa¿ ostatni obieg funkcji nie wkroczy do pêtli for; funkcja zwraca zmienn¹ zmodyfikowan¹ w przed-ostatnim obiegu */
 	static int i = 0;
-	static long wielkosc;
+	static size_t wielkosc;
 	if (i == 0) {
 		wielkosc = wierzcholki.size();
 		wierzcholki.resize(2 * wielkosc - 1);
 	}
 	i++;
-	sort(wierzcholki.begin(), wierzcholki.end(), sortuj_wierzcholki);
-	for (int i = 0; i < wierzcholki.size() - 2; i++) {
+	sort(wierzcholki.begin(), wierzcholki.end(), sortuj_wierzcholki); /** Sortuje wektor wed³ug warunków podanych w sortuj_wierzcholki */
+	for (size_t i = 0; i < wierzcholki.size() - 2; i++) {	/** Pêtla zaczyna od dwóch pierwszych (dziêki sortowaniu najmniejszych) wektorów. 
+															*   Pomija te, które by³y ju¿ u¿yte dziêki wartoœci ma_rodzica */
 		if (!wierzcholki[i].ma_rodzica && !wierzcholki[i + 1].ma_rodzica) {
+			
 			w_pomocniczy.lewy = &wierzcholki[i];
 			w_pomocniczy.prawy = &wierzcholki[i + 1];
 			w_pomocniczy.wartosc = wierzcholki[i].wartosc + wierzcholki[i + 1].wartosc;
+
 			wierzcholki[i].ma_rodzica = true;
-			wierzcholki[i + 1].ma_rodzica = true;		
-			w_pomocniczy.dzieci = wierzcholki[i].dzieci + wierzcholki[i + 1].dzieci;
-			if (wierzcholki[i].dzieci == 0)
-				w_pomocniczy.dzieci++;
-			if (wierzcholki[i + 1].dzieci == 0)
-				w_pomocniczy.dzieci++;
+			wierzcholki[i + 1].ma_rodzica = true;
+
+			w_pomocniczy.dzieci = wierzcholki[i].dzieci + wierzcholki[i + 1].dzieci + 1;	///< iloœæ pokoleñ = suma pokoleñ z ni¿szych + 1 nowe */
+
 			wierzcholki[wielkosc++] = w_pomocniczy;
 			zbuduj_drzewo(wierzcholki);
 			break;
@@ -61,6 +73,15 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 	}
 	return w_pomocniczy;
 }
+/**
+	* Funkcja sortuj¹ca wektor wierzcho³ków
+	* Parametr przekazywany przez wartoœæ
+	* @param a - wierzcho³ek a
+	* @param b - wierzcho³ek b
+	* @return true, je¿eli a ma mniejsz¹ wartoœæ od b. Wyj¹tkiem jest sytuacja, gdy wartoœæ wynosi 0.
+	* Ka¿dy niepusty wierzcho³ek ma wartoœæ ró¿n¹ od 0. Obecnoœæ zera wynika z wartoœci domyœlnej wierzcho³ków niezdeklarowanych,
+	* inicjowanych podczas wywo³ania funkcji vector::resize w zbuduj_drzewo.
+*/
 bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
 	if (a.wartosc != b.wartosc)
 		if (a.wartosc == 0 || b.wartosc == 0)
