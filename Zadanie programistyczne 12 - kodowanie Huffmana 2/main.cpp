@@ -11,10 +11,8 @@ void wypisz(wierzcholek w) {
         wypisz(*w.prawy);
     }
     else {  //  elementy dolne maj¹ wskaŸnik o wartoœci nullptr, wiêc wypisywana jest wartoœæ i znak
-        cout << w.wartosc << endl;
-        cout << w.znak << endl;
+        cout << w.wartosc << w.znak << endl;
     }
-
 }
 int main()
 {
@@ -25,4 +23,5 @@ int main()
     odczytaj_odkodowane("C:\\Users\\Dawid\\Desktop\\New Text Document.txt", wierzcholki, kod);
     w = zbuduj_drzewo(wierzcholki);
     wypisz(w);
+    cout << endl;
 }
