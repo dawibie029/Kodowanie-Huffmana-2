@@ -21,12 +21,18 @@
     <ClCompile Include="funkcje.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="funkcje_widok.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="struktury.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="funkcje.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="funkcje_widok.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
