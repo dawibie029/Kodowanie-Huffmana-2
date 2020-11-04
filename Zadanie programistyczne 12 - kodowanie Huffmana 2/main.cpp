@@ -11,7 +11,7 @@ void wypisz(wierzcholek w) {
         wypisz(*w.prawy);
     }
     else {  
-        cout << w.wartosc << " - " << w.znak << endl;
+        cout << "\"" << w.znak << "\" - " << w.kod << endl;
     }
 }
 
@@ -23,8 +23,8 @@ int main(int argc, char* argv[]) {
     vector<wierzcholek> wierzcholki;
     string kod;
     odczytaj_odkodowane(adreswe, wierzcholki, kod);
-    w = zbuduj_drzewo(wierzcholki);
-    wypisz(w);
+    w = zbuduj_drzewo(wierzcholki);   
     zakoduj(w);
+    wypisz(w);
     cout << endl;
 }
