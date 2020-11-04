@@ -1,5 +1,8 @@
 #ifndef STRUKTURY_H
 #define STRUKTURY_H
+#include <string>
+using namespace std;
+
 struct wierzcholek {
 
 	wierzcholek* lewy = nullptr; /**< wskaŸnik na wierzcholek lewy. Domyœlnie nullptr, poniewa¿ pocz¹tkowe wierzcho³ki nigdzie nie wskazuj¹.
@@ -12,6 +15,10 @@ struct wierzcholek {
 					* Pozosta³e posiadaj¹ jedynie wskaŸniki do innych wierzcholkow */
 	bool ma_rodzica = false;
 
+	bool b_lewy = false;
+
 	unsigned short dzieci = 0;	/**< liczba pokoleñ (czyli liczba ga³êzi od wierzcho³ka do wierzcho³ków pocz¹tkowych) */
+
+	string kod = "";	//*< sk³adowa kodu Huffmana, przy dolnych wierzcho³kach przyjmie finaln¹ wartoœæ.
 };
 #endif

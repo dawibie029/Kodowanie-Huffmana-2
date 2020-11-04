@@ -3,7 +3,6 @@
 #include <map>
 #include <fstream>
 #include <algorithm>
-using namespace std;
 
 /**
 	* Funkcja odczytuj¹ca z pliku tekst oraz konwertuj¹ca go na wektor wierzcho³ków zawieraj¹cych znak i liczbê jego wyst¹pieñ w tekœcie
@@ -58,7 +57,9 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 		if (!wierzcholki[i].ma_rodzica && !wierzcholki[i + 1].ma_rodzica) {
 			
 			w_pomocniczy.lewy = &wierzcholki[i];
+			wierzcholki[i].b_lewy = true;
 			w_pomocniczy.prawy = &wierzcholki[i + 1];
+			wierzcholki[i + 1].b_lewy = false;
 			w_pomocniczy.wartosc = wierzcholki[i].wartosc + wierzcholki[i + 1].wartosc;
 
 			wierzcholki[i].ma_rodzica = true;
@@ -72,6 +73,24 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 		}
 	}
 	return w_pomocniczy;
+}
+void zakoduj(wierzcholek& w) {
+	stworz_kod(w.lewy, "");
+	stworz_kod(w.prawy, "");
+}
+void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
+	if ((*w).ma_rodzica) {
+		if ((*w).b_lewy) {
+			(*w).kod = kod_rodzica + "0";
+		}
+		else {
+			(*w).kod = kod_rodzica + "1";
+		}
+		if ((*w).dzieci > 0) {
+			stworz_kod((*w).prawy, (*w).kod);
+			stworz_kod((*w).lewy, (*w).kod);
+		}
+	}
 }
 /**
 	* Funkcja sortuj¹ca wektor wierzcho³ków

@@ -25,5 +25,6 @@ int main(int argc, char* argv[]) {
     odczytaj_odkodowane(adreswe, wierzcholki, kod);
     w = zbuduj_drzewo(wierzcholki);
     wypisz(w);
+    zakoduj(w);
     cout << endl;
 }
