@@ -78,6 +78,21 @@ void zakoduj(wierzcholek& w) {
 	stworz_kod(w.lewy, "");
 	stworz_kod(w.prawy, "");
 }
+vector<pair<char, string>> stworz_pary(wierzcholek w) {
+	static int i = 0;
+	static vector<pair<char, string>> wektor_pomocniczy;
+	pair<char, string> para_pomocnicza;
+	if (w.lewy != nullptr) {
+		stworz_pary(*w.lewy);
+		stworz_pary(*w.prawy);
+	}
+	else {
+		para_pomocnicza.first = w.znak;
+		para_pomocnicza.second = w.kod;
+		wektor_pomocniczy.push_back(para_pomocnicza);
+	}
+	return wektor_pomocniczy;
+}
 void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 	if ((*w).ma_rodzica) {
 		if ((*w).b_lewy) {
@@ -90,6 +105,20 @@ void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 			stworz_kod((*w).prawy, (*w).kod);
 			stworz_kod((*w).lewy, (*w).kod);
 		}
+	}
+}
+void konwertuj(string& tekst, const vector<pair<char, string>>& kody) {
+	for (const auto& a : kody) {
+		string zmienna_pomocnicza (1, a.first);
+		znak_na_kod(tekst, zmienna_pomocnicza, a.second);
+	}
+}
+void znak_na_kod(std::string& tekst, const std::string& co_zmienic, const std::string& na_co_zmienic)
+{
+	size_t start_pos = 0;
+	while ((start_pos = tekst.find(co_zmienic, start_pos)) != std::string::npos) {
+		tekst.replace(start_pos, co_zmienic.length(), na_co_zmienic);
+		start_pos += na_co_zmienic.length(); 
 	}
 }
 /**

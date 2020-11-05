@@ -25,6 +25,11 @@ int main(int argc, char* argv[]) {
     odczytaj_odkodowane(adreswe, wierzcholki, kod);
     w = zbuduj_drzewo(wierzcholki);   
     zakoduj(w);
-    wypisz(w);
+    vector<pair<char, string>> xD = stworz_pary(w);
+    for (auto a : xD) {
+        cout << "\"" << a.first << "\" - " << a.second<< endl;
+    }
     cout << endl;
+    konwertuj(kod, xD);
+    cout << kod << endl;
 }
