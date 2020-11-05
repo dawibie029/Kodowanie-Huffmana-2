@@ -35,6 +35,12 @@ bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, 
 	else
 		return false;
 }
+/**
+	* Funkcja, która wywo³uje kolejno odpowiednie funkcje w celu przeprowadzenia kodowania Huffmana.
+	* @param adreswe - adres pliku wejœciowego.
+	* @param adreswy - adres pliku wyjœciowego.
+	* @return zwraca true, je¿eli uda siê zapisaæ kod w odpowiednim pliku. W przeciwnym wypadku fa³sz.
+*/
 bool algorytm_zakodowania(const string& adreswe, const string& adreswy) {
 	wierzcholek w;
 	vector<wierzcholek> wierzcholki;
@@ -43,10 +49,30 @@ bool algorytm_zakodowania(const string& adreswe, const string& adreswy) {
 	w = zbuduj_drzewo(wierzcholki);
 	zakoduj(w);
 	vector<pair<char, string>> xD = stworz_pary(w);
-	konwertuj(kod, xD);
+	konwertuj(kod, xD, true);
 	string str;
 	polacz(kod, xD, str);
 	return (zapisz(adreswy, str));	
+}
+bool algorytm_odkodowania(const string& adreswe, const string& adreswy) {
+	string tekst;
+	vector<pair<char, string>> kody;
+	odczytaj_zakodowane(adreswe, kody, tekst);
+	konwertuj(tekst, kody, false);
+	zapisz(adreswy, tekst);
+	return true;
+}
+bool odczytaj_zakodowane(const string& adres, vector<pair<char, string>>& kody, string& tekst) {
+	ifstream plik(adres);
+	getline(plik, tekst);
+	while (!plik.eof()) {
+		pair<char, string> p_pomocnicza;
+		plik.get(p_pomocnicza.first);
+		plik.get(); plik.get(); plik.get(); // pomijamy spacjê, myœlnik, spacjê
+		getline(plik, p_pomocnicza.second);
+		kody.push_back(p_pomocnicza);
+	}
+	return true;
 }
 /**
 	* Funkcja maj¹ca na celu zapisaæ tekst do pliku.
@@ -159,11 +185,16 @@ void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 	* @param tekst - oryginalny tekst
 	* @param kody - wektor par zawieraj¹cy znaki oraz odpowiadaj¹ce im kody
 */
-void konwertuj(string& tekst, const vector<pair<char, string>>& kody) {
-	for (const auto& a : kody) {
-		string zmienna_pomocnicza (1, a.first);
-		znak_na_kod(tekst, zmienna_pomocnicza, a.second);
+void konwertuj(string& tekst, const vector<pair<char, string>>& kody, const bool& zakoduj) {
+	if (zakoduj) {
+		for (const auto& a : kody) {
+			string zmienna_pomocnicza(1, a.first);
+			znak_na_kod(tekst, zmienna_pomocnicza, a.second);
+		}
 	}
+	else
+		kod_na_znak(tekst, kody);
+
 }
 /**
 	* Funkcja zamieniaj¹ca poszczególne znaki na odpowiadaj¹ce im kody
@@ -179,6 +210,19 @@ void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zm
 		i += na_co_zmienic.length(); 
 	}
 }
+void kod_na_znak(string& tekst, const vector<pair<char, string>>& kody) {
+	for (int i = 0; i < tekst.length(); i++) {
+		for (auto a : kody) {
+			int dlugosc = a.second.length();
+			string str_pomocniczy = tekst.substr(i, dlugosc);
+			if (str_pomocniczy == a.second) {
+				string str_pomocniczy_2(1, a.first);
+				tekst.replace(i, dlugosc, str_pomocniczy_2);
+				break;
+			}
+		}
+	}
+}
 /**
 	* Funkcja sortuj¹ca wektor wierzcho³ków
 	* Parametr przekazywany przez wartoœæ
@@ -188,7 +232,7 @@ void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zm
 	* Ka¿dy niepusty wierzcho³ek ma wartoœæ ró¿n¹ od 0. Obecnoœæ zera wynika z wartoœci domyœlnej wierzcho³ków niezdeklarowanych,
 	* inicjowanych podczas wywo³ania funkcji vector::resize w zbuduj_drzewo.
 */
-bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
+bool sortuj_wierzcholki(const wierzcholek& a, const wierzcholek& b) {
 	if (a.wartosc != b.wartosc)
 		if (a.wartosc == 0 || b.wartosc == 0)
 			return a.wartosc > b.wartosc;
@@ -202,18 +246,8 @@ bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
 	* Parametry przekazywane przez referencje.
 	* @param kod - zakodowany tekst.
 	* @param pary - wektor znaków i wartoœci.
-	* @return jedna zmienna zawieraj¹ca tekst oraz wypisane pary.
+	* @param str jedna zmienna zawieraj¹ca tekst oraz wypisane pary.
 */
-/*string polacz(const string& kod, const vector<pair<char, string>>& pary, string& str) {
-	string zmienna_pomocnicza;
-	zmienna_pomocnicza = kod;
-	zmienna_pomocnicza += "\n";
-	for (auto para : pary) {
-		zmienna_pomocnicza += para.first + " - ";
-		zmienna_pomocnicza += para.second + "\n";
-	}
-	return zmienna_pomocnicza;
-}*/
 void polacz(const string& kod, const vector<pair<char, string>>& pary, string& str) {
 	str = kod;
 	str += "\n";

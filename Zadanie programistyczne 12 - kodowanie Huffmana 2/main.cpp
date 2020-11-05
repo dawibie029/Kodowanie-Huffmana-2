@@ -17,30 +17,14 @@ void wypisz(wierzcholek w) {
 
 int main(int argc, char* argv[]) {
     string adreswe, adreswy;
-    if (interakcja(argc, argv, adreswe, adreswy)) {
+    /*if (interakcja(argc, argv, adreswe, adreswy)) {
         if (algorytm_zakodowania(adreswe, adreswy)) {
             cout << "Sukces!" << endl;
         }
         else
             cout << "Niepowodzenie! " << endl;
-       /* wierzcholek w;
-        w.znak = 'w';
-        vector<wierzcholek> wierzcholki;
-        string kod;
-        odczytaj_odkodowane(adreswe, wierzcholki, kod);
-        w = zbuduj_drzewo(wierzcholki);
-        zakoduj(w);
-        vector<pair<char, string>> xD = stworz_pary(w);
-        for (auto a : xD) {
-            cout << "\"" << a.first << "\" - " << a.second << endl;
-        }
-        cout << endl;
-        konwertuj(kod, xD);
-        cout << kod << endl;
-        string str;
-        polacz(kod, xD, str);
-        zapisz(adreswy, str);
-        cout << "Done!" << endl;*/
     }
-    else return 0;
+    else return 0;*/
+    algorytm_zakodowania("C:\\Users\\Dawid\\Desktop\\testXDDD.txt", "C:\\Users\\Dawid\\Desktop\\New Text Document2.txt");
+    algorytm_odkodowania("C:\\Users\\Dawid\\Desktop\\New Text Document2.txt", "C:\\Users\\Dawid\\Desktop\\testXDDD2.txt");
 }
