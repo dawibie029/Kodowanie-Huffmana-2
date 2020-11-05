@@ -158,7 +158,7 @@ void konwertuj(string& tekst, const vector<pair<char, string>>& kody) {
 	* @param co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) który ma byæ podmieniony
 	* @param na_co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) na który podmieniony ma byæ co_zmienic
 */
-void znak_na_kod(std::string& tekst, const std::string& co_zmienic, const std::string& na_co_zmienic)
+void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zmienic)
 {
 	size_t i = 0;
 	while ((i = tekst.find(co_zmienic, i)) != std::string::npos) {
@@ -183,4 +183,30 @@ bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
 			return a.wartosc < b.wartosc;
 	else /** je¿eli jest taka sama wartoœæ, to w pierwszej kolejnoœci wybieramy wêzê³ z mniejsz¹ iloœci¹ dzieci */
 		return a.dzieci < b.dzieci;
+}
+/**
+	* Funkcja ³¹cz¹ca zakodowany tekst, oraz wektor zawieraj¹cy znaki i odpowiadaj¹ce im wartoœci w jedn¹ zmienn¹ tekstow¹.
+	* Parametry przekazywane przez referencje.
+	* @param kod - zakodowany tekst.
+	* @param pary - wektor znaków i wartoœci.
+	* @return jedna zmienna zawieraj¹ca tekst oraz wypisane pary.
+*/
+/*string polacz(const string& kod, const vector<pair<char, string>>& pary, string& str) {
+	string zmienna_pomocnicza;
+	zmienna_pomocnicza = kod;
+	zmienna_pomocnicza += "\n";
+	for (auto para : pary) {
+		zmienna_pomocnicza += para.first + " - ";
+		zmienna_pomocnicza += para.second + "\n";
+	}
+	return zmienna_pomocnicza;
+}*/
+void polacz(const string& kod, const vector<pair<char, string>>& pary, string& str) {
+	str = kod;
+	str += "\n";
+	for (auto para : pary) {
+		str += para.first + " - ";
+		str += para.second + "\n";
+	}
+	
 }

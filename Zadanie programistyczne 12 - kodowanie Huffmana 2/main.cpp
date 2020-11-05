@@ -32,4 +32,7 @@ int main(int argc, char* argv[]) {
     cout << endl;
     konwertuj(kod, xD);
     cout << kod << endl;
+    string str;
+    polacz(kod, xD, str);
+    zapisz(adreswy, str);
 }
