@@ -210,3 +210,45 @@ void polacz(const string& kod, const vector<pair<char, string>>& pary, string& s
 	}
 	
 }
+short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& adres_wyjscia, bool& wejscie, bool& wyjscie,
+	bool& kodowanie, bool& dekodowanie) {
+	for (int i = 1; i < argc; i++) {
+		if (strcmp(argv[i], "-i") == 0 && i < argc - 1) {
+			adres_wejscia = argv[i + 1];
+			for (int j = i + 2; strcmp(argv[j], "-i") != 0 && strcmp(argv[j], "-o") != 0
+				&& strcmp(argv[j], "-c") != 0 && strcmp(argv[j], "-d") != 0; j++) {
+				adres_wejscia += " ";
+				adres_wejscia += argv[j];
+			}
+			wejscie = true;
+		}
+		else if (strcmp(argv[i], "-o") == 0 && i < argc - 1) {
+			adres_wyjscia = argv[i + 1];
+			for (int j = i + 2; strcmp(argv[j], "-i") != 0 && strcmp(argv[j], "-o") != 0
+				&& strcmp(argv[j], "-c") != 0 && strcmp(argv[j], "-d") != 0; j++) {
+				adres_wyjscia += " ";
+				adres_wyjscia += argv[j];
+			}
+			wyjscie = true;
+		}
+		else if (strcmp(argv[i], "-c") == 0) {
+			kodowanie = true;
+		}
+		else if (strcmp(argv[i], "-d") == 0) {
+			dekodowanie = true;
+		}
+	}
+	if (wejscie && wyjscie) {
+		if (kodowanie && !dekodowanie)
+			return 1;
+		else if (!kodowanie && dekodowanie)
+			return 2;
+		else {
+
+			return -1;
+		}
+	}
+	else {
+		return -2;
+	}
+}
