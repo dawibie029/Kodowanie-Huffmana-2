@@ -4,14 +4,7 @@
 #include <fstream>
 #include <algorithm>
 
-/**
-	* Funkcja odczytuj¹ca z pliku tekst oraz konwertuj¹ca go na wektor wierzcho³ków zawieraj¹cych znak i liczbê jego wyst¹pieñ w tekœcie
-	* Parametry przekazywane przez referencjê
-	* @param adres - adres pliku tekstowego
-	* @param wierzcholki - wektor wierzcho³ków
-	* @param kod - niezmieniona zawartoœæ pliku tekstowego - domyœlnie tekst, który bêdzie kompresowany przez kodowanie Huffmana
-	* @return true jeœli uda siê otworzyæ plik. W przypadku niepowodzenia wartoœæ false
-*/
+
 bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, string& kod) {
 	std::ifstream plik(adres);
 	if (plik) {
@@ -35,12 +28,7 @@ bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, 
 	else
 		return false;
 }
-/**
-	* Funkcja, która wywo³uje kolejno odpowiednie funkcje w celu przeprowadzenia kodowania Huffmana.
-	* @param adreswe - adres pliku wejœciowego.
-	* @param adreswy - adres pliku wyjœciowego.
-	* @return zwraca true, je¿eli uda siê zapisaæ kod w odpowiednim pliku. W przeciwnym wypadku fa³sz.
-*/
+
 bool algorytm_zakodowania(const string& adreswe, const string& adreswy) {
 	wierzcholek w;
 	vector<wierzcholek> wierzcholki;
@@ -74,12 +62,7 @@ bool odczytaj_zakodowane(const string& adres, vector<pair<char, string>>& kody, 
 	}
 	return true;
 }
-/**
-	* Funkcja maj¹ca na celu zapisaæ tekst do pliku.
-	* @param adres - adres pliku
-	* @param kod - tekst, który zostanie zapisany w pliku
-	* @return true, jeœli uda siê otworzyæ plik. W przypadku niepowodzenia false.
-*/
+
 bool zapisz(const string& adres, string kod) {
 	ofstream plik(adres);
 	if (plik) {
@@ -89,13 +72,7 @@ bool zapisz(const string& adres, string kod) {
 	else
 		return false;
 }
-/**
-	* Funkcja tworz¹ca drzewo binarne
-	* Parametr przekazywany przez referencjê
-	* @param wierzcholki - wektor wierzcho³ków utworzonych w funkcji odczytaj_odkodowane
-	* @return pojedynczy wierzcho³ek, bêd¹cy szczytem drzewa binarnego. Zawiera adresy wierzcho³ków ni¿szych, 
-	* które zawieraj¹ adresy jeszcze ni¿szych, a¿ do wierzcho³ków zawieraj¹cych pojedyncze znaki i adresy o wartoœci nullptr
-*/
+
 wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 	static wierzcholek w_pomocniczy;	//**< static, poniewa¿ ostatni obieg funkcji nie wkroczy do pêtli for; funkcja zwraca zmienn¹ zmodyfikowan¹ w przed-ostatnim obiegu */
 	static int i = 0;
@@ -128,21 +105,12 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 	}
 	return w_pomocniczy;
 }
-/**
-	* Funkcja maj¹ca na celu wype³nienie zmiennej sk³adowej kod w wierzcho³kach. Wierzcho³ki, w których znak nie wynosi '\0' otrzymaj¹ pe³ny kod Huffmana dla danego znaku.
-	* G³ównym zadaniem funkcji jest wywo³anie fukncji stworz_kod dla obu ga³êzi wychodz¹cych z wierzcho³ka szczytowego.
-	* Parametr przekazywany przez referencjê.
-	*@param w - wierzcho³ek bêd¹cy szczytem drzewa binarnego.
-*/
+
 void zakoduj(wierzcholek& w) {
 	stworz_kod(w.lewy, "");
 	stworz_kod(w.prawy, "");
 }
-/**
-	* Funkcja rekurencyjna maj¹ca na celu stworzenie wektora par zawieraj¹cych znak i przypisany mu kod Huffmana
-	* Parametr przekazywany przez referencjê
-	*@param w - wierzcho³ek bêd¹cy szczytem drzewa binarnego
-*/
+
 vector<pair<char, string>> stworz_pary(const wierzcholek& w) {
 	static vector<pair<char, string>> wektor_pomocniczy;
 	pair<char, string> para_pomocnicza;
@@ -158,13 +126,7 @@ vector<pair<char, string>> stworz_pary(const wierzcholek& w) {
 	}
 	return wektor_pomocniczy;
 }
-/**
-	* Funkcja rekurencyjna, w której ma miejsce faktyczne generowanie kodu Huffmana. Wierzcho³ek z lewej otrzymuje 0, a z prawej 1, dopóki funkcja nie dotrze
-	* do wierzcho³ka, którego wartoœæ zmiennej sk³adowej dzieci wynosi 0.
-	* Parametr w przekazywany przez adres, kod_rodzica przekazywany przez referencjê.
-	*param w - adres wierzcho³ka.
-	*param kod_rodzica - kod, który ma wêzê³ wy¿szy. Dla wêz³ów górnych domyœlna wartoœæ to "".
-*/
+
 void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 	if ((*w).ma_rodzica) {
 		if ((*w).b_lewy) {
@@ -179,12 +141,7 @@ void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 		}
 	}
 }
-/**
-	* Funkcja maj¹ca na celu przekonwertowanie oryginalnego tekstu na odpowiadaj¹cy mu kod Huffmana
-	* Parametry przekazywany przez referencjê
-	* @param tekst - oryginalny tekst
-	* @param kody - wektor par zawieraj¹cy znaki oraz odpowiadaj¹ce im kody
-*/
+
 void konwertuj(string& tekst, const vector<pair<char, string>>& kody, const bool& zakoduj) {
 	if (zakoduj) {
 		for (const auto& a : kody) {
@@ -196,12 +153,7 @@ void konwertuj(string& tekst, const vector<pair<char, string>>& kody, const bool
 		kod_na_znak(tekst, kody);
 
 }
-/**
-	* Funkcja zamieniaj¹ca poszczególne znaki na odpowiadaj¹ce im kody
-	* @param tekst - oryginalny tekst
-	* @param co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) który ma byæ podmieniony
-	* @param na_co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) na który podmieniony ma byæ co_zmienic
-*/
+
 void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zmienic)
 {
 	size_t i = 0;
@@ -210,6 +162,7 @@ void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zm
 		i += na_co_zmienic.length(); 
 	}
 }
+
 void kod_na_znak(string& tekst, const vector<pair<char, string>>& kody) {
 	for (int i = 0; i < tekst.length(); i++) {
 		for (auto a : kody) {
@@ -223,15 +176,7 @@ void kod_na_znak(string& tekst, const vector<pair<char, string>>& kody) {
 		}
 	}
 }
-/**
-	* Funkcja sortuj¹ca wektor wierzcho³ków
-	* Parametr przekazywany przez wartoœæ
-	* @param a - wierzcho³ek a
-	* @param b - wierzcho³ek b
-	* @return true, je¿eli a ma mniejsz¹ wartoœæ od b. Wyj¹tkiem jest sytuacja, gdy wartoœæ wynosi 0.
-	* Ka¿dy niepusty wierzcho³ek ma wartoœæ ró¿n¹ od 0. Obecnoœæ zera wynika z wartoœci domyœlnej wierzcho³ków niezdeklarowanych,
-	* inicjowanych podczas wywo³ania funkcji vector::resize w zbuduj_drzewo.
-*/
+
 bool sortuj_wierzcholki(const wierzcholek& a, const wierzcholek& b) {
 	if (a.wartosc != b.wartosc)
 		if (a.wartosc == 0 || b.wartosc == 0)
@@ -241,13 +186,7 @@ bool sortuj_wierzcholki(const wierzcholek& a, const wierzcholek& b) {
 	else /** je¿eli jest taka sama wartoœæ, to w pierwszej kolejnoœci wybieramy wêzê³ z mniejsz¹ iloœci¹ dzieci */
 		return a.dzieci < b.dzieci;
 }
-/**
-	* Funkcja ³¹cz¹ca zakodowany tekst, oraz wektor zawieraj¹cy znaki i odpowiadaj¹ce im wartoœci w jedn¹ zmienn¹ tekstow¹.
-	* Parametry przekazywane przez referencje.
-	* @param kod - zakodowany tekst.
-	* @param pary - wektor znaków i wartoœci.
-	* @param str jedna zmienna zawieraj¹ca tekst oraz wypisane pary.
-*/
+
 void polacz(const string& kod, const vector<pair<char, string>>& pary, string& str) {
 	str = kod;
 	str += "\n";
@@ -257,6 +196,7 @@ void polacz(const string& kod, const vector<pair<char, string>>& pary, string& s
 	}
 	
 }
+
 short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& adres_wyjscia, bool& wejscie, bool& wyjscie,
 	bool& kodowanie, bool& dekodowanie) {
 	for (int i = 1; i < argc; i++) {
@@ -285,17 +225,30 @@ short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& a
 			dekodowanie = true;
 		}
 	}
+	return algorytm_kodowania_dekodowania(adres_wejscia, adres_wyjscia, wejscie, wyjscie, kodowanie, dekodowanie);
+}
+short algorytm_kodowania_dekodowania(const string& adreswe, const string& adreswy, 
+	const bool& wejscie, const bool& wyjscie, const bool& kodowanie, const bool& dekodowanie) {
+
 	if (wejscie && wyjscie) {
-		if (kodowanie && !dekodowanie)
-			return 1;
-		else if (!kodowanie && dekodowanie)
-			return 2;
+		if (kodowanie && !dekodowanie) {
+			if (algorytm_zakodowania(adreswe, adreswy))
+				return 1;
+			else
+				return -1;
+		}
+		else if (!kodowanie && dekodowanie){
+			if (algorytm_odkodowania(adreswe, adreswy))
+				return 2;
+			else
+				return -2;
+		}
 		else {
 
-			return -1;
+			return -3;
 		}
 	}
 	else {
-		return -2;
+		return -4;
 	}
 }
