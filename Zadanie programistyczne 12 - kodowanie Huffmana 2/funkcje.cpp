@@ -36,6 +36,21 @@ bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, 
 		return false;
 }
 /**
+	* Funkcja maj¹ca na celu zapisaæ tekst do pliku.
+	* @param adres - adres pliku
+	* @param kod - tekst, który zostanie zapisany w pliku
+	* @return true, jeœli uda siê otworzyæ plik. W przypadku niepowodzenia false.
+*/
+bool zapisz(const string& adres, string kod) {
+	ofstream plik(adres);
+	if (plik) {
+		plik << kod;
+		return true;
+	}
+	else
+		return false;
+}
+/**
 	* Funkcja tworz¹ca drzewo binarne
 	* Parametr przekazywany przez referencjê
 	* @param wierzcholki - wektor wierzcho³ków utworzonych w funkcji odczytaj_odkodowane
@@ -84,11 +99,16 @@ void zakoduj(wierzcholek& w) {
 	stworz_kod(w.lewy, "");
 	stworz_kod(w.prawy, "");
 }
-vector<pair<char, string>> stworz_pary(wierzcholek w) {
-	static int i = 0;
+/**
+	* Funkcja rekurencyjna maj¹ca na celu stworzenie wektora par zawieraj¹cych znak i przypisany mu kod Huffmana
+	* Parametr przekazywany przez referencjê
+	*@param w - wierzcho³ek bêd¹cy szczytem drzewa binarnego
+*/
+vector<pair<char, string>> stworz_pary(const wierzcholek& w) {
 	static vector<pair<char, string>> wektor_pomocniczy;
 	pair<char, string> para_pomocnicza;
-	if (w.lewy != nullptr) {
+	if (w.lewy != nullptr) {	/** Sprawdzamy tylko lewy dla oszczêdnoœci czasu - wskaŸniki zawsze by³y zapisywane parami lewy-prawy, wiêc niemo¿liwe jest, aby
+								* przy istnieniu jednego nie istnia³ drugi. Gdyby jednak tak siê zdarzy³o, b³¹d nast¹pi³ by ju¿ w funkcji zbuduj_drzewo */
 		stworz_pary(*w.lewy);
 		stworz_pary(*w.prawy);
 	}
@@ -120,18 +140,30 @@ void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 		}
 	}
 }
+/**
+	* Funkcja maj¹ca na celu przekonwertowanie oryginalnego tekstu na odpowiadaj¹cy mu kod Huffmana
+	* Parametry przekazywany przez referencjê
+	* @param tekst - oryginalny tekst
+	* @param kody - wektor par zawieraj¹cy znaki oraz odpowiadaj¹ce im kody
+*/
 void konwertuj(string& tekst, const vector<pair<char, string>>& kody) {
 	for (const auto& a : kody) {
 		string zmienna_pomocnicza (1, a.first);
 		znak_na_kod(tekst, zmienna_pomocnicza, a.second);
 	}
 }
+/**
+	* Funkcja zamieniaj¹ca poszczególne znaki na odpowiadaj¹ce im kody
+	* @param tekst - oryginalny tekst
+	* @param co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) który ma byæ podmieniony
+	* @param na_co_zmienic - ³añcuch znaków (lub char przekonwertowany na string) na który podmieniony ma byæ co_zmienic
+*/
 void znak_na_kod(std::string& tekst, const std::string& co_zmienic, const std::string& na_co_zmienic)
 {
-	size_t start_pos = 0;
-	while ((start_pos = tekst.find(co_zmienic, start_pos)) != std::string::npos) {
-		tekst.replace(start_pos, co_zmienic.length(), na_co_zmienic);
-		start_pos += na_co_zmienic.length(); 
+	size_t i = 0;
+	while ((i = tekst.find(co_zmienic, i)) != std::string::npos) {
+		tekst.replace(i, co_zmienic.length(), na_co_zmienic);
+		i += na_co_zmienic.length(); 
 	}
 }
 /**
@@ -149,6 +181,6 @@ bool sortuj_wierzcholki(wierzcholek a, wierzcholek b) {
 			return a.wartosc > b.wartosc;
 		else
 			return a.wartosc < b.wartosc;
-	else /** je¿eli jest taka sama wartoœæ, to w pierwszej kolejnoœci wybieramy wêzê³ z mniejsz¹ iloœci¹ dzieci*/
+	else /** je¿eli jest taka sama wartoœæ, to w pierwszej kolejnoœci wybieramy wêzê³ z mniejsz¹ iloœci¹ dzieci */
 		return a.dzieci < b.dzieci;
 }
