@@ -205,8 +205,8 @@ void polacz(const string& kod, const vector<pair<char, string>>& pary, string& s
 	str = kod;
 	str += "\n";
 	for (auto para : pary) {
-		str += para.first + " - ";
-		str += para.second + "\n";
+		str.push_back(para.first);
+		str += " - " + para.second + "\n";
 	}
 	
 }
