@@ -18,7 +18,12 @@ void wypisz(wierzcholek w) {
 int main(int argc, char* argv[]) {
     string adreswe, adreswy;
     if (interakcja(argc, argv, adreswe, adreswy)) {
-        wierzcholek w;
+        if (algorytm_zakodowania(adreswe, adreswy)) {
+            cout << "Sukces!" << endl;
+        }
+        else
+            cout << "Niepowodzenie! " << endl;
+       /* wierzcholek w;
         w.znak = 'w';
         vector<wierzcholek> wierzcholki;
         string kod;
@@ -26,16 +31,16 @@ int main(int argc, char* argv[]) {
         w = zbuduj_drzewo(wierzcholki);
         zakoduj(w);
         vector<pair<char, string>> xD = stworz_pary(w);
-       /* for (auto a : xD) {
+        for (auto a : xD) {
             cout << "\"" << a.first << "\" - " << a.second << endl;
-        }*/
+        }
         cout << endl;
         konwertuj(kod, xD);
         cout << kod << endl;
         string str;
         polacz(kod, xD, str);
         zapisz(adreswy, str);
-        cout << "Done!" << endl;
+        cout << "Done!" << endl;*/
     }
     else return 0;
 }

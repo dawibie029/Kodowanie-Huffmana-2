@@ -20,4 +20,5 @@ bool zapisz(const string& adres, string kod);
 void polacz(const string& kod, const vector<pair<char, string>>& pary, string& str);
 short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& adres_wyjscia, bool& wejscie, bool& wyjscie,
 	bool& kodowanie, bool& dekodowanie);
+bool algorytm_zakodowania(const string& adreswe, const string& adreswy);
 #endif

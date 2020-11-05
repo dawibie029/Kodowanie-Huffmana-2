@@ -35,6 +35,19 @@ bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, 
 	else
 		return false;
 }
+bool algorytm_zakodowania(const string& adreswe, const string& adreswy) {
+	wierzcholek w;
+	vector<wierzcholek> wierzcholki;
+	string kod;
+	odczytaj_odkodowane(adreswe, wierzcholki, kod);
+	w = zbuduj_drzewo(wierzcholki);
+	zakoduj(w);
+	vector<pair<char, string>> xD = stworz_pary(w);
+	konwertuj(kod, xD);
+	string str;
+	polacz(kod, xD, str);
+	return (zapisz(adreswy, str));	
+}
 /**
 	* Funkcja maj¹ca na celu zapisaæ tekst do pliku.
 	* @param adres - adres pliku
