@@ -74,6 +74,12 @@ wierzcholek zbuduj_drzewo(vector<wierzcholek>& wierzcholki) {
 	}
 	return w_pomocniczy;
 }
+/**
+	* Funkcja maj¹ca na celu wype³nienie zmiennej sk³adowej kod w wierzcho³kach. Wierzcho³ki, w których znak nie wynosi '\0' otrzymaj¹ pe³ny kod Huffmana dla danego znaku.
+	* G³ównym zadaniem funkcji jest wywo³anie fukncji stworz_kod dla obu ga³êzi wychodz¹cych z wierzcho³ka szczytowego.
+	* Parametr przekazywany przez referencjê.
+	*@param w - wierzcho³ek bêd¹cy szczytem drzewa binarnego.
+*/
 void zakoduj(wierzcholek& w) {
 	stworz_kod(w.lewy, "");
 	stworz_kod(w.prawy, "");
@@ -93,6 +99,13 @@ vector<pair<char, string>> stworz_pary(wierzcholek w) {
 	}
 	return wektor_pomocniczy;
 }
+/**
+	* Funkcja rekurencyjna, w której ma miejsce faktyczne generowanie kodu Huffmana. Wierzcho³ek z lewej otrzymuje 0, a z prawej 1, dopóki funkcja nie dotrze
+	* do wierzcho³ka, którego wartoœæ zmiennej sk³adowej dzieci wynosi 0.
+	* Parametr w przekazywany przez adres, kod_rodzica przekazywany przez referencjê.
+	*param w - adres wierzcho³ka.
+	*param kod_rodzica - kod, który ma wêzê³ wy¿szy. Dla wêz³ów górnych domyœlna wartoœæ to "".
+*/
 void stworz_kod(wierzcholek *w, const string& kod_rodzica) {
 	if ((*w).ma_rodzica) {
 		if ((*w).b_lewy) {
