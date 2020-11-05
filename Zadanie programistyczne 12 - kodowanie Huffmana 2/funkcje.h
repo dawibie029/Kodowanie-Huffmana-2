@@ -20,6 +20,14 @@ using namespace std;
 bool odczytaj_odkodowane(const string& adres, vector<wierzcholek>& wierzcholki, string& kod);
 
 
+/**
+	* Funkcja odczytuj¹ca z pliku zakodowany tekst oraz oraz wektor par zawieraj¹cy znaki i odpowiadaj¹ce im kody
+	* Parametry przekazywane przez referencjê
+	* @param adres - adres pliku tekstowego
+	* @param kody - wektor par zawieraj¹cy znaki i odpowiadaj¹ce im kody
+	* @param kod - zakodowany tekst
+	* @return true jeœli uda siê otworzyæ plik. W przypadku niepowodzenia wartoœæ false
+*/
 bool odczytaj_zakodowane(const string& adres, vector<pair<char, string>>& kody, string& tekst);
 
 
@@ -125,7 +133,7 @@ void polacz(const string& kod, const vector<pair<char, string>>& pary, string& s
 	* @param argc - iloœæ elementów tablicy argv.
 	* @param argv - tablica zawieraj¹ca dane wprowadzone w wierszu poleceñ.
 	* @param adres_wejscia - adres pliku wejsciowego
-	* @param adres_wejscia - adres pliku wyjsciowego
+	* @param adres_wyjscia - adres pliku wyjsciowego
 	* @param wejscie - przyjmie wartoœæ true, je¿eli wprowadzono plik wejœciowy.
 	* @param wyjscie - przyjmie wartoœæ true, je¿eli wprowadzono plik wejœciowy.
 	* @param kodowanie - przyjmie wartoœæ true, je¿eli wprowadzono argument "-c".
@@ -147,14 +155,30 @@ short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& a
 	* Funkcja, która wywo³uje kolejno odpowiednie funkcje w celu przeprowadzenia kodowania Huffmana.
 	* @param adreswe - adres pliku wejœciowego.
 	* @param adreswy - adres pliku wyjœciowego.
-	* @return zwraca true, je¿eli uda siê zapisaæ kod w odpowiednim pliku. W przeciwnym wypadku fa³sz.
+	* @return zwraca true, je¿eli uda siê zapisaæ kod w odpowiednim pliku. W przeciwnym wypadku false.
 */
 bool algorytm_zakodowania(const string& adreswe, const string& adreswy);
 
 
+/**
+	* Funkcja, która wywo³uje kolejno odpowiednie funkcje w celu odkodowania zakodowanego tekstu.
+	* @param adreswe - adres pliku wejœciowego.
+	* @param adreswy - adres pliku wyjœciowego.
+	* @return zwraca true, je¿eli uda siê zapisaæ odkodowany tekst. W przeciwnym wypadku false.
+*/
 bool algorytm_odkodowania(const string& adreswe, const string& adreswy);
 
 
+/**
+	* Funkcja, która analizuje wprowadzone dane i na ich podstawie wywo³uje kolejne funkcje i zwraca wartoœæ wed³ug odpowiedniego kodu
+	* @param adreswe - adres pliku wejsciowego
+	* @param adreswy - adres pliku wyjsciowego
+	* @param wejscie - przyjmie wartoœæ true, je¿eli wprowadzono plik wejœciowy.
+	* @param wyjscie - przyjmie wartoœæ true, je¿eli wprowadzono plik wejœciowy.
+	* @param kodowanie - przyjmie wartoœæ true, je¿eli wprowadzono argument "-c".
+	* @param dekodowanie - przyjmie wartoœæ true, je¿eli wprowadzono argument "-d".
+	* @return zwraca wartoœæ wed³ug kodu zdefiniowanego przy funkcji logika_interakcji
+*/
 short algorytm_kodowania_dekodowania(const string& adreswe, const string& adreswy,
 	const bool& wejscie, const bool& wyjscie, const bool& kodowanie, const bool& dekodowanie);
 #endif

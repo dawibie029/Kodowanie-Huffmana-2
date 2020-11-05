@@ -50,17 +50,22 @@ bool algorytm_odkodowania(const string& adreswe, const string& adreswy) {
 	zapisz(adreswy, tekst);
 	return true;
 }
+
 bool odczytaj_zakodowane(const string& adres, vector<pair<char, string>>& kody, string& tekst) {
 	ifstream plik(adres);
-	getline(plik, tekst);
-	while (!plik.eof()) {
-		pair<char, string> p_pomocnicza;
-		plik.get(p_pomocnicza.first);
-		plik.get(); plik.get(); plik.get(); // pomijamy spacjê, myœlnik, spacjê
-		getline(plik, p_pomocnicza.second);
-		kody.push_back(p_pomocnicza);
+	if (plik) {
+		getline(plik, tekst);
+		while (!plik.eof()) {
+			pair<char, string> p_pomocnicza;
+			plik.get(p_pomocnicza.first);
+			plik.get(); plik.get(); plik.get(); // pomijamy spacjê, myœlnik, spacjê
+			getline(plik, p_pomocnicza.second);
+			kody.push_back(p_pomocnicza);
+		}
+		return true;
 	}
-	return true;
+	else
+		return false;
 }
 
 bool zapisz(const string& adres, string kod) {
@@ -164,7 +169,7 @@ void znak_na_kod(string& tekst, const string& co_zmienic, const string& na_co_zm
 }
 
 void kod_na_znak(string& tekst, const vector<pair<char, string>>& kody) {
-	for (int i = 0; i < tekst.length(); i++) {
+	for (size_t i = 0; i < tekst.length(); i++) {
 		for (auto a : kody) {
 			int dlugosc = a.second.length();
 			string str_pomocniczy = tekst.substr(i, dlugosc);
@@ -227,6 +232,8 @@ short logika_interakcji(int argc, char* argv[], string& adres_wejscia, string& a
 	}
 	return algorytm_kodowania_dekodowania(adres_wejscia, adres_wyjscia, wejscie, wyjscie, kodowanie, dekodowanie);
 }
+
+
 short algorytm_kodowania_dekodowania(const string& adreswe, const string& adreswy, 
 	const bool& wejscie, const bool& wyjscie, const bool& kodowanie, const bool& dekodowanie) {
 
