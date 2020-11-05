@@ -17,22 +17,25 @@ void wypisz(wierzcholek w) {
 
 int main(int argc, char* argv[]) {
     string adreswe, adreswy;
-    interakcja(argc, argv, adreswe, adreswy);
-    wierzcholek w;
-    w.znak = 'w';
-    vector<wierzcholek> wierzcholki;
-    string kod;
-    odczytaj_odkodowane(adreswe, wierzcholki, kod);
-    w = zbuduj_drzewo(wierzcholki);   
-    zakoduj(w);
-    vector<pair<char, string>> xD = stworz_pary(w);
-    for (auto a : xD) {
-        cout << "\"" << a.first << "\" - " << a.second<< endl;
+    if (interakcja(argc, argv, adreswe, adreswy)) {
+        wierzcholek w;
+        w.znak = 'w';
+        vector<wierzcholek> wierzcholki;
+        string kod;
+        odczytaj_odkodowane(adreswe, wierzcholki, kod);
+        w = zbuduj_drzewo(wierzcholki);
+        zakoduj(w);
+        vector<pair<char, string>> xD = stworz_pary(w);
+       /* for (auto a : xD) {
+            cout << "\"" << a.first << "\" - " << a.second << endl;
+        }*/
+        cout << endl;
+        konwertuj(kod, xD);
+        cout << kod << endl;
+        string str;
+        polacz(kod, xD, str);
+        zapisz(adreswy, str);
+        cout << "Done!" << endl;
     }
-    cout << endl;
-    konwertuj(kod, xD);
-    cout << kod << endl;
-    string str;
-    polacz(kod, xD, str);
-    zapisz(adreswy, str);
+    else return 0;
 }
