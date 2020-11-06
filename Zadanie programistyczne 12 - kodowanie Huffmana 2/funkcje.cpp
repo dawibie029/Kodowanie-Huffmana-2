@@ -36,10 +36,10 @@ bool algorytm_zakodowania(const string& adreswe, const string& adreswy) {
 	odczytaj_odkodowane(adreswe, wierzcholki, kod);
 	w = zbuduj_drzewo(wierzcholki);
 	zakoduj(w);
-	vector<pair<char, string>> xD = stworz_pary(w);
-	konwertuj(kod, xD, true);
+	vector<pair<char, string>> wektor_par = stworz_pary(w);
+	konwertuj(kod, wektor_par, true);
 	string str;
-	polacz(kod, xD, str);
+	polacz(kod, wektor_par, str);
 	return (zapisz(adreswy, str));	
 }
 bool algorytm_odkodowania(const string& adreswe, const string& adreswy) {
